@@ -1,0 +1,28 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.App > h1 {
+  border: 2px solid black;
+  border-radius: 15px;
+  background-color: #e2dfdf;
+  width: 50%;
+  text-align: center;
+  font-style: italic;
+}
+
+.App li {
+  list-style-type: none;
+}
+
+.delIcon {
+  color: red;
+  cursor: pointer;
+}
+
+input:checked + span {
+  text-decoration: line-through;
+}

@@ -1,37 +1,48 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import Header from "./components/Header";
+import InputField from "./components/InputField";
+import TodoList from "./components/TodoList";
 
-function App() {
-  const dispatch = useDispatch();
-  const cash = useSelector((state) => state.cash);
+export default function App() {
+  const [todos, setTodos] = useState([]);
+  const [text, setText] = useState(" ");
 
-  const inputCashValue = () => Number(prompt("Введите сумму пополнения: "));
-
-  const addCash = () => {
-    const value = 5;
-    dispatch({ action: "ADD_CASH", payload: value });
+  const addTodo = () => {
+    const trimText = text.trim();
+    if (trimText.length) {
+      setTodos([
+        ...todos,
+        {
+          id: new Date().toISOString(),
+          complited: false,
+          text,
+        },
+      ]);
+    }
+    setText("");
   };
 
-  const getCash = () => {
-    const value = inputCashValue();
-    dispatch({ action: "GET_CASH", payload: value });
+  const removeTodo = (todoId) => {
+    setTodos(todos.filter((todo) => todo.id !== todoId));
+  };
+
+  const toggleChecked = (todoId) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === todoId ? { ...todo, complited: !todo.complited } : todo
+      )
+    );
   };
 
   return (
-    <div className="container">
-      <h1 className="text-center">Cash: {cash}</h1>
-      <div className="row text-center mt-5">
-        <div className="col-12">
-          <button onClick={addCash} className="btn btn-primary mx-5">
-            Пополнить
-          </button>
-          <button onClick={getCash} className="btn btn-primary mx-5">
-            Снять
-          </button>
-        </div>
-      </div>
+    <div className="App">
+      <Header />
+      <InputField text={text} setText={setText} addTodo={addTodo} />
+      <TodoList
+        todos={todos}
+        toggleChecked={toggleChecked}
+        removeTodo={removeTodo}
+      />
     </div>
   );
 }
-
-export default App;
