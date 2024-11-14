@@ -1,14 +1,12 @@
+import { useSelector } from "react-redux";
 import ListItem from "./ListItem";
 
-const TodoList = ({ todos, toggleChecked, removeTodo, ...props }) => {
+const TodoList = ({ ...props }) => {
+  const todos = useSelector((state) => state.todos.todos);
   return (
     <ul className="text-center">
       {todos.map((todo) => (
-        <ListItem
-          todo={todo}
-          removeTodo={removeTodo}
-          toggleChecked={toggleChecked}
-        />
+        <ListItem key={todo.id} {...todo} />
       ))}
     </ul>
   );

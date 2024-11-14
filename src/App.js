@@ -1,48 +1,24 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import Header from "./components/Header";
 import InputField from "./components/InputField";
 import TodoList from "./components/TodoList";
+import { addTodo } from "./store/todoSlice";
 
 export default function App() {
-  const [todos, setTodos] = useState([]);
-  const [text, setText] = useState(" ");
+  const [text, setText] = useState("");
+  const dispatch = useDispatch();
 
-  const addTodo = () => {
-    const trimText = text.trim();
-    if (trimText.length) {
-      setTodos([
-        ...todos,
-        {
-          id: new Date().toISOString(),
-          complited: false,
-          text,
-        },
-      ]);
-    }
+  const addTodoItem = () => {
+    dispatch(addTodo({ text }));
     setText("");
-  };
-
-  const removeTodo = (todoId) => {
-    setTodos(todos.filter((todo) => todo.id !== todoId));
-  };
-
-  const toggleChecked = (todoId) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === todoId ? { ...todo, complited: !todo.complited } : todo
-      )
-    );
   };
 
   return (
     <div className="App">
       <Header />
-      <InputField text={text} setText={setText} addTodo={addTodo} />
-      <TodoList
-        todos={todos}
-        toggleChecked={toggleChecked}
-        removeTodo={removeTodo}
-      />
+      <InputField text={text} setText={setText} addTodoItem={addTodoItem} />
+      <TodoList />
     </div>
   );
 }

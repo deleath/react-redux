@@ -1,13 +1,17 @@
-const ListItem = ({ todo, removeTodo, toggleChecked, ...props }) => {
+import { useDispatch } from "react-redux";
+import { toggleComplitedTodo, removeTodo } from "../store/todoSlice";
+
+const ListItem = ({ id, text, complited, ...props }) => {
+  const dispatch = useDispatch();
   return (
-    <li key={todo.id}>
+    <li key={id}>
       <input
         type="checkbox"
-        checked={todo.complited}
-        onChange={() => toggleChecked(todo.id)}
+        checked={complited}
+        onChange={() => dispatch(toggleComplitedTodo({ id }))}
       />
-      <span>{todo.text}</span>
-      <span onClick={() => removeTodo(todo.id)} className="delIcon">
+      <span>{text}</span>
+      <span onClick={() => dispatch(removeTodo({ id }))} className="delIcon">
         &times;
       </span>
     </li>
